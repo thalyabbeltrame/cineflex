@@ -11,8 +11,8 @@ export default function App() {
 	return (
 		<Fragment>
 			<GlobalStyle />
+			<Header />
 			<BrowserRouter>
-				<Header />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/filme/:movieId' element={<Movie />} />
