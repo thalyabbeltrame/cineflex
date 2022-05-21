@@ -25,7 +25,7 @@ export default function Movie() {
 			<SubHeader text={'Selecione o horário'} />
 			<Content>
 				{movieSessions.map((day) => (
-					<MovieSession key={movieSessions.id}>
+					<MovieSession key={day.id}>
 						<Day>{`${day.weekday} - ${day.date}`}</Day>
 						<Showtimes>
 							{day.showtimes.map((showtime) => (

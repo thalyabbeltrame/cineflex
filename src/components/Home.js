@@ -20,7 +20,7 @@ export default function Home() {
 			<SubHeader text={'Selecione o filme'} />
 			<Content>
 				{moviesList.map((movie) => (
-					<Link key={movie.id} to={`/filme/${movie.id}`} element={<Movie />}>
+					<Link key={movie.id} to={`/sessoes/${movie.id}`} element={<Movie />}>
 						<Image>
 							<img src={movie.posterURL} alt={movie.title} />
 						</Image>
