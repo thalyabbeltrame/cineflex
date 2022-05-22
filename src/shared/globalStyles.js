@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 
-@import url('https://fonts.googleapis.com/css2?family=Recursive:wght@400;700&family=Righteous&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Recursive:wght@400;700&family=Righteous&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
   
   html,
   body,

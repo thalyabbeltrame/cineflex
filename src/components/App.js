@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import GlobalStyle from '../theme/globalStyles';
+import GlobalStyle from '../shared/globalStyles';
 import Home from './Home';
 import Header from './Header';
 import Movie from './Movie';
@@ -17,7 +17,7 @@ export default function App() {
 					<Route path='/' element={<Home />} />
 					<Route path='/sessoes/:movieId' element={<Movie />} />
 					<Route path='/assentos/:sessionId' element={<Session />} />
-					<Route path='/success' element={<Success />} />
+					<Route path='/sucesso' element={<Success />} />
 				</Routes>
 			</BrowserRouter>
 		</Fragment>

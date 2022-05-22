@@ -6,18 +6,17 @@ import SubHeader from './SubHeader';
 import Movie from './Movie';
 
 export default function Home() {
-	const API_URL = 'https://mock-api.driven.com.br/api/v5/cineflex/movies';
 	const [moviesList, setMoviesList] = useState([]);
 
 	useEffect(() => {
-		axios.get(API_URL).then((response) => {
-			setMoviesList([...response.data]);
+		axios.get('https://mock-api.driven.com.br/api/v5/cineflex/movies').then((response) => {
+			setMoviesList(response.data);
 		});
 	}, []);
 
 	return (
 		<Container>
-			<SubHeader text={'Selecione o filme'} />
+			<SubHeader text={'Selecione o filme'} screen={'Home'} />
 			<Content>
 				{moviesList.map((movie) => (
 					<Link key={movie.id} to={`/sessoes/${movie.id}`} element={<Movie />}>

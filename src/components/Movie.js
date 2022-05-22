@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import SubHeader from './SubHeader';
@@ -8,21 +7,20 @@ import Session from './Session';
 import Footer from './Footer';
 
 export default function Movie() {
-	const API_URL = 'https://mock-api.driven.com.br/api/v5/cineflex/movies';
 	const { movieId } = useParams();
+	const [generalMovieInfos, setGeneralMovieInfos] = useState({});
 	const [movieSessions, setMovieSessions] = useState([]);
-  const [movieInfos, setMovieInfos] = useState({});
 
 	useEffect(() => {
-		axios.get(`${API_URL}/${movieId}/showtimes`).then((response) => {
-      setMovieInfos(response.data);
+		axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${movieId}/showtimes`).then((response) => {
+			setGeneralMovieInfos(response.data);
 			setMovieSessions(response.data.days);
 		});
 	}, []);
 
 	return (
 		<Container>
-			<SubHeader text={'Selecione o horário'} />
+			<SubHeader text={'Selecione o horário'} screen={'Movie'} />
 			<Content>
 				{movieSessions.map((day) => (
 					<MovieSession key={day.id}>
@@ -37,7 +35,12 @@ export default function Movie() {
 					</MovieSession>
 				))}
 			</Content>
-			<Footer movieInfos={movieInfos}/>
+			<Footer
+				movieImage={generalMovieInfos.posterURL}
+				movieTitle={generalMovieInfos.title}
+				movieDate={''}
+				movieShowtime={''}
+			/>
 		</Container>
 	);
 }
@@ -51,7 +54,7 @@ const Content = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 0 24px;
-  margin-bottom: 117px;
+	margin-bottom: 117px;
 `;
 
 const MovieSession = styled.div`
@@ -80,9 +83,8 @@ const Showtimes = styled.div`
 const Button = styled.button`
 	width: 83px;
 	height: 43px;
-	background: #e8833a;
+	background-color: #e8833a;
 	border: none;
-	cursor: pointer;
 	border-radius: 3px;
 	margin-right: 8px;
 	font-weight: 400;
@@ -90,8 +92,9 @@ const Button = styled.button`
 	line-height: 21px;
 	letter-spacing: 0.02em;
 	color: #ffffff;
+	cursor: pointer;
 
-  &:hover {
-    filter: brightness(70%);
-  }
+	&:hover {
+		filter: brightness(70%);
+	}
 `;

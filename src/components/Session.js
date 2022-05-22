@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import SubHeader from './SubHeader';
 import Footer from './Footer';
-import Success from './Success';
+
+export const cpfMask = (value) => {
+	return value
+		.replace(/\D/g, '')
+		.replace(/(\d{3})(\d)/, '$1.$2')
+		.replace(/(\d{3})(\d)/, '$1.$2')
+		.replace(/(\d{3})(\d{1,2})/, '$1-$2')
+		.replace(/(-\d{2})\d+?$/, '$1');
+};
 
 export default function Session() {
-	const API_URL = 'https://mock-api.driven.com.br/api/v5/cineflex/showtimes';
 	const { sessionId } = useParams();
-	const [movieInfos, setMovieInfos] = useState({});
+	const navigate = useNavigate();
+	const [showtime, setShowtime] = useState('');
+	const [day, setDay] = useState({});
+	const [generalMovieInfos, setGeneralMovieInfos] = useState({});
 	const [sessionSeats, setSessionSeats] = useState([]);
 	const [selectedSeats, setSelectedSeats] = useState([]);
 	const [nameInput, setNameInput] = useState('');
@@ -23,50 +32,73 @@ export default function Session() {
 	];
 
 	useEffect(() => {
-		axios.get(`${API_URL}/${sessionId}/seats`).then((response) => {
+		axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessionId}/seats`).then((response) => {
+			setShowtime(response.data.name);
+			setDay(response.data.day);
+			setGeneralMovieInfos(response.data.movie);
 			setSessionSeats(response.data.seats);
-			setMovieInfos(response.data.movie);
 		});
 	}, []);
 
-	const selectSeat = (id, isAvailable) => {
+	const selectSeat = (seatName, seatId, isAvailable) => {
 		if (!isAvailable) return alert('Esse assento não está disponível');
-		if (selectedSeats.includes(id)) {
-			setSelectedSeats(selectedSeats.filter((seat) => seat !== id));
+		if (selectedSeats.filter((seat) => seat.name === seatName && seat.id === seatId).length) {
+			setSelectedSeats(selectedSeats.filter((seat) => seat.name !== seatName && seat.id !== seatId));
 		} else {
-			setSelectedSeats([...selectedSeats, id]);
+			setSelectedSeats([...selectedSeats, { name: seatName, id: seatId }]);
 		}
-	};
-
-	const cpfMask = (value) => {
-		return value
-			.replace(/\D/g, '')
-			.replace(/(\d{3})(\d)/, '$1.$2')
-			.replace(/(\d{3})(\d)/, '$1.$2')
-			.replace(/(\d{3})(\d{1,2})/, '$1-$2')
-			.replace(/(-\d{2})\d+?$/, '$1');
 	};
 
 	const reserveSeats = (event) => {
 		event.preventDefault();
-		console.log('oi');
+
+		const request = {
+			ids: selectedSeats.map((seat) => seat.id),
+			name: nameInput,
+			cpf: cpfInput.split(/[.-]+/).join(''),
+		};
+
+		axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many', request).then(() => {
+			navigate('/sucesso', {
+				state: {
+					title: generalMovieInfos.title,
+					day: day.date,
+					hour: showtime,
+					seats: selectedSeats.map((seat) => seat.name).sort((a, b) => a - b),
+					name: nameInput,
+					cpf: cpfInput,
+				},
+			});
+		});
 	};
 
 	return (
 		<Container>
-			<SubHeader text={'Selecione o(s) assento(s)'} />
+			<SubHeader text={'Selecione o(s) assento(s)'} screen={'Session'} />
 			<Content>
 				<Seats>
 					{sessionSeats.map((seat) => (
 						<Seat
 							key={seat.id}
 							backgroundColor={
-								selectedSeats.includes(seat.id) ? '#8dd7cf' : seat.isAvailable ? '#c3cfd9' : '#fbe192'
+								selectedSeats.filter(
+									(selectedSeat) => selectedSeat.name === seat.name && selectedSeat.id === seat.id
+								).length
+									? '#8dd7cf'
+									: seat.isAvailable
+									? '#c3cfd9'
+									: '#fbe192'
 							}
 							borderColor={
-								selectedSeats.includes(seat.id) ? '#1aae9e' : seat.isAvailable ? '#808f9d' : '#f7c52b'
+								selectedSeats.filter(
+									(selectedSeat) => selectedSeat.name === seat.name && selectedSeat.id === seat.id
+								).length
+									? '#1aae9e'
+									: seat.isAvailable
+									? '#808f9d'
+									: '#f7c52b'
 							}
-							onClick={() => selectSeat(seat.id, seat.isAvailable)}
+							onClick={() => selectSeat(seat.name, seat.id, seat.isAvailable)}
 						>
 							{seat.name}
 						</Seat>
@@ -97,20 +129,22 @@ export default function Session() {
 						id='cpfInput'
 						value={cpfInput}
 						placeholder='Digite seu CPF...'
-						maxLength='14'
 						onChange={(e) => setCpfInput(cpfMask(e.target.value))}
 					/>
-					<Link to={'/sucesso'} element={<Success />}>
-						<button
-							type='submit'
-							disabled={cpfInput.length !== 14 || nameInput === '' || selectedSeats[0] === null}
-						>
-							Reservar assento(s)
-						</button>
-					</Link>
+					<button
+						type='submit'
+						disabled={cpfInput.length !== 14 || nameInput === '' || selectedSeats.length === 0}
+					>
+						Reservar assento(s)
+					</button>
 				</Form>
 			</Content>
-			<Footer movieInfos={movieInfos} />
+			<Footer
+				movieImage={generalMovieInfos.posterURL}
+				movieTitle={generalMovieInfos.title}
+				movieDate={day.weekday}
+				movieShowtime={showtime}
+			/>
 		</Container>
 	);
 }
@@ -225,6 +259,6 @@ const Form = styled.form`
 		color: #ffffff;
 		border: none;
 		cursor: pointer;
-		margin-top: 47px;
+		margin: 47px 0 30px 0;
 	}
 `;

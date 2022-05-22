@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 
-export default function Footer({ movieInfos }) {
+export default function Footer({ movieImage, movieTitle, movieDate, movieShowtime }) {
 	return (
 		<Content>
 			<Image>
-				<img src={movieInfos.posterURL} alt={movieInfos.title} />
+				<img src={movieImage} alt={movieTitle} />
 			</Image>
-			{movieInfos.title}
+			{movieDate !== '' ? (
+				<Text>
+					<p>{movieTitle}</p>
+					<p>{`${movieDate} - ${movieShowtime}`}</p>
+				</Text>
+			) : (
+				<p>{movieTitle}</p>
+			)}
 		</Content>
 	);
 }
@@ -20,7 +27,7 @@ const Content = styled.footer`
 	height: 117px;
 	background-color: #dfe6ed;
 	border: 1px solid #9eadba;
-  padding: 0 24px;
+	padding: 0 24px;
 	font-weight: 400;
 	font-size: 26px;
 	line-height: 30px;
@@ -40,11 +47,16 @@ const Image = styled.div`
 	background-color: #ffffff;
 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 2px;
-  margin-right: 14px;
+	margin-right: 14px;
 
 	img {
 		width: 48px;
 		height: 72px;
 		color: black;
 	}
+`;
+
+const Text = styled.div`
+	display: flex;
+	flex-direction: column;
 `;
