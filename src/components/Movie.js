@@ -64,8 +64,8 @@ const MovieSession = styled.div`
 	align-items: flex-start;
 	justify-content: space-between;
 	width: 100%;
-	height: 100px;
-	margin-bottom: 29px;
+	height: 80px;
+	margin-bottom: 28px;
 `;
 
 const Day = styled.h3`

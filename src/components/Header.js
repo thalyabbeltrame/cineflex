@@ -9,7 +9,7 @@ export default function Header({ screen }) {
 	return (
 		<Content>
 			{screen !== 'Home' ? (
-				<IconContext.Provider value={{ className: 'icon', color: '#e8833a', size: '40px' }}>
+				<IconContext.Provider value={{ className: 'icon', color: '#e8833a', size: '30px' }}>
 					<ImArrowLeft onClick={() => navigate(-1)} />
 				</IconContext.Provider>
 			) : null}
