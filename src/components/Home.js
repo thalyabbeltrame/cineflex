@@ -5,14 +5,16 @@ import axios from 'axios';
 import SubHeader from './SubHeader';
 import Movie from './Movie';
 
-export default function Home({ setScreen }) {
+export default function Home() {
 	const [moviesList, setMoviesList] = useState([]);
 
 	useEffect(() => {
-		axios.get('https://mock-api.driven.com.br/api/v5/cineflex/movies').then((response) => {
-			setMoviesList(response.data);
-			setScreen('Home');
-		});
+		axios
+			.get('https://mock-api.driven.com.br/api/v5/cineflex/movies')
+			.then((response) => {
+				setMoviesList(response.data);
+			})
+			.catch(() => alert('Não foi possível obter a lista de filmes'));
 	}, []);
 
 	return (
@@ -41,6 +43,7 @@ const Content = styled.div`
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
+	align-items: center;
 `;
 
 const Image = styled.div`

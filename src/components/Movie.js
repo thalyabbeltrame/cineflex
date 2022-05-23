@@ -6,17 +6,19 @@ import SubHeader from './SubHeader';
 import Session from './Session';
 import Footer from './Footer';
 
-export default function Movie({ setScreen }) {
+export default function Movie() {
 	const { movieId } = useParams();
 	const [generalMovieInfos, setGeneralMovieInfos] = useState({});
 	const [movieSessions, setMovieSessions] = useState([]);
 
 	useEffect(() => {
-		axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${movieId}/showtimes`).then((response) => {
-			setGeneralMovieInfos(response.data);
-			setMovieSessions(response.data.days);
-			setScreen('Movie');
-		});
+		axios
+			.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${movieId}/showtimes`)
+			.then((response) => {
+				setGeneralMovieInfos(response.data);
+				setMovieSessions(response.data.days);
+			})
+			.catch(() => alert('Não foi possível obter a lista de sessões'));
 	}, []);
 
 	return (
@@ -54,7 +56,7 @@ const Container = styled.div`
 const Content = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 0 24px;
+	padding: 0 15px;
 	margin-bottom: 117px;
 `;
 

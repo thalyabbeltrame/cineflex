@@ -1,16 +1,17 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { ImArrowLeft } from 'react-icons/im';
+import { IoChevronBackOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons/lib';
 
 export default function Header({ screen }) {
 	const navigate = useNavigate();
+	const router = useLocation().pathname;
 
 	return (
 		<Content>
-			{screen !== 'Home' ? (
-				<IconContext.Provider value={{ className: 'icon', color: '#e8833a', size: '30px' }}>
-					<ImArrowLeft onClick={() => navigate(-1)} />
+			{router !== '/' ? (
+				<IconContext.Provider value={{ className: 'icon', color: '#e8833a', size: '40px' }}>
+					<IoChevronBackOutline onClick={() => navigate(-1)} />
 				</IconContext.Provider>
 			) : null}
 			<Text>CINEFLEX</Text>

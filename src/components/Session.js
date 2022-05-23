@@ -5,7 +5,7 @@ import axios from 'axios';
 import SubHeader from './SubHeader';
 import Footer from './Footer';
 
-export default function Session({ setScreen }) {
+export default function Session() {
 	const { sessionId } = useParams();
 	const navigate = useNavigate();
 	const [showtime, setShowtime] = useState('');
@@ -23,13 +23,15 @@ export default function Session({ setScreen }) {
 	];
 
 	useEffect(() => {
-		axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessionId}/seats`).then((response) => {
-			setShowtime(response.data.name);
-			setDay(response.data.day);
-			setGeneralMovieInfos(response.data.movie);
-			setSessionSeats(response.data.seats);
-			setScreen('Session');
-		});
+		axios
+			.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessionId}/seats`)
+			.then((response) => {
+				setShowtime(response.data.name);
+				setDay(response.data.day);
+				setGeneralMovieInfos(response.data.movie);
+				setSessionSeats(response.data.seats);
+			})
+			.catch(() => alert('Não foi possível obter as informações dos assentos'));
 	}, []);
 
 	const selectSeat = (seatName, seatId, isAvailable) => {
@@ -132,12 +134,17 @@ export default function Session({ setScreen }) {
 						placeholder='Digite seu CPF...'
 						onChange={(e) => setCpfInput(cpfMask(e.target.value))}
 					/>
-					<button
+					<Button
 						type='submit'
 						disabled={cpfInput.length !== 14 || nameInput.trim() === '' || selectedSeats.length === 0}
+						backgroundColor={
+							cpfInput.length !== 14 || nameInput.trim() === '' || selectedSeats.length === 0
+								? '#c3cfd9'
+								: '#e8833a'
+						}
 					>
 						Reservar assento(s)
-					</button>
+					</Button>
 				</Form>
 			</Content>
 			<Footer
@@ -158,7 +165,7 @@ const Container = styled.div`
 const Content = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 0 20.5px;
+	padding: 0 15px;
 	margin-bottom: 117px;
 `;
 
@@ -187,6 +194,10 @@ const Seat = styled.div`
 	letter-spacing: 0.04em;
 	color: #000000;
 	cursor: pointer;
+
+	&:hover {
+		filter: brightness(80%);
+	}
 `;
 
 const SeatsAvailability = styled.ul`
@@ -247,19 +258,24 @@ const Form = styled.form`
 			color: #afafaf;
 		}
 	}
+`;
 
-	button {
-		width: 225px;
-		height: 42px;
-		background-color: #e8833a;
-		border-radius: 3px;
-		font-weight: 400;
-		font-size: 18px;
-		line-height: 21px;
-		letter-spacing: 0.04em;
-		color: #ffffff;
-		border: none;
-		cursor: pointer;
-		margin: 47px 0 30px 0;
+const Button = styled.button`
+	width: 225px;
+	height: 42px;
+	background-color: ${(props) => props.backgroundColor};
+	border-radius: 3px;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 21px;
+	letter-spacing: 0.04em;
+	color: #ffffff;
+	border: none;
+	cursor: pointer;
+	margin: 47px 0 30px 0;
+	transition: background-color 0.5s;
+
+	&:hover {
+		filter: brightness(80%);
 	}
 `;

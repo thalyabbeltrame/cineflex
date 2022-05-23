@@ -27,7 +27,7 @@ const Content = styled.footer`
 	height: 117px;
 	background-color: #dfe6ed;
 	border: 1px solid #9eadba;
-	padding: 0 24px;
+	padding: 0 15px;
 	font-weight: 400;
 	font-size: 26px;
 	line-height: 30px;

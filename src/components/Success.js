@@ -1,17 +1,10 @@
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import SubHeader from './SubHeader';
 
-export default function Success({ setScreen }) {
+export default function Success() {
 	const { state } = useLocation();
 	const navigate = useNavigate();
-
-	useEffect(() => setScreen('Success'));
-
-	const backToHome = () => {
-		navigate('/');
-	};
 
 	return (
 		<Container>
@@ -21,13 +14,13 @@ export default function Success({ setScreen }) {
 				<NormalText>{state.title}</NormalText>
 				<NormalText>{`${state.day} ${state.hour}`}</NormalText>
 				<BoldText>Ingressos</BoldText>
-				{state.seats.map((seat) => (
-					<NormalText>{`Assento ${seat}`}</NormalText>
+				{state.seats.map((seat, index) => (
+					<NormalText key={index}>{`Assento ${seat}`}</NormalText>
 				))}
 				<BoldText>Comprador</BoldText>
 				<NormalText>{`Nome: ${state.name}`}</NormalText>
 				<NormalText>{`CPF: ${state.cpf}`}</NormalText>
-				<Button onClick={backToHome}>{'Voltar para Home'}</Button>
+				<Button onClick={() => navigate('/')}>{'Voltar para Home'}</Button>
 			</Content>
 		</Container>
 	);
@@ -44,7 +37,7 @@ const Content = styled.div`
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	padding: 0 28px;
+	padding: 0 15px;
 `;
 
 const BoldText = styled.h3`
@@ -76,7 +69,7 @@ const Button = styled.button`
 	line-height: 21px;
 	letter-spacing: 0.04em;
 	color: #ffffff;
-	margin-top: 80px;
+	margin: 80px 0 50px 0;
 	border: none;
 	cursor: pointer;
 

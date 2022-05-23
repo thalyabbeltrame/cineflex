@@ -10,10 +10,13 @@ export default function SubHeader({ text, screen }) {
 
 const Content = styled.div`
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
 	width: 100%;
 	height: 110px;
+	padding: 0 15px;
 	font-weight: ${(props) => props.fontWeight};
 	font-size: 24px;
 	line-height: 28px;

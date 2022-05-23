@@ -144,8 +144,12 @@ const GlobalStyle = createGlobalStyle`
 
   .icon {
     position: absolute;
-    left: 20px;
+    left: 10px;
     cursor: pointer;
+
+    &:hover {
+      filter: brightness(80%);
+    }
   }
 `;
 
