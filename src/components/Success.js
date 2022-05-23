@@ -8,7 +8,7 @@ export default function Success() {
 
 	return (
 		<Container>
-			<SubHeader text={'Pedido feito com sucesso!'} screen={'Success'} />
+			<SubHeader text={'Pedido feito com sucesso!'} />
 			<Content>
 				<BoldText>Filme e sessão</BoldText>
 				<NormalText>{state.title}</NormalText>

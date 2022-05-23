@@ -5,6 +5,7 @@ import axios from 'axios';
 import SubHeader from './SubHeader';
 import Session from './Session';
 import Footer from './Footer';
+import Loading from './Loading';
 
 export default function Movie() {
 	const { movieId } = useParams();
@@ -23,20 +24,24 @@ export default function Movie() {
 
 	return (
 		<Container>
-			<SubHeader text={'Selecione o horário'} screen={'Movie'} />
+			<SubHeader text={'Selecione o horário'} />
 			<Content>
-				{movieSessions.map((day) => (
-					<MovieSession key={day.id}>
-						<Day>{`${day.weekday} - ${day.date}`}</Day>
-						<Showtimes>
-							{day.showtimes.map((showtime) => (
-								<Link key={showtime.id} to={`/assentos/${showtime.id}`} element={<Session />}>
-									<Button>{showtime.name}</Button>
-								</Link>
-							))}
-						</Showtimes>
-					</MovieSession>
-				))}
+				{movieSessions[0] ? (
+					movieSessions.map((day) => (
+						<MovieSession key={day.id}>
+							<Day>{`${day.weekday} - ${day.date}`}</Day>
+							<Showtimes>
+								{day.showtimes.map((showtime) => (
+									<Link key={showtime.id} to={`/assentos/${showtime.id}`} element={<Session />}>
+										<Button>{showtime.name}</Button>
+									</Link>
+								))}
+							</Showtimes>
+						</MovieSession>
+					))
+				) : (
+					<Loading />
+				)}
 			</Content>
 			<Footer
 				movieImage={generalMovieInfos.posterURL}
@@ -58,6 +63,7 @@ const Content = styled.div`
 	flex-direction: column;
 	padding: 0 15px;
 	margin-bottom: 117px;
+	align-items: center;
 `;
 
 const MovieSession = styled.div`

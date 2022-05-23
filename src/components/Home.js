@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import SubHeader from './SubHeader';
 import Movie from './Movie';
+import Loading from './Loading';
 
 export default function Home() {
 	const [moviesList, setMoviesList] = useState([]);
@@ -19,15 +20,15 @@ export default function Home() {
 
 	return (
 		<Container>
-			<SubHeader text={'Selecione o filme'} screen={'Home'} />
+			<SubHeader text={'Selecione o filme'} />
 			<Content>
-				{moviesList.map((movie) => (
+				{moviesList[0] ? moviesList.map((movie) => (
 					<Link key={movie.id} to={`/sessoes/${movie.id}`} element={<Movie />}>
 						<Image>
 							<img src={movie.posterURL} alt={movie.title} />
 						</Image>
 					</Link>
-				))}
+				)) : <Loading />}
 			</Content>
 		</Container>
 	);

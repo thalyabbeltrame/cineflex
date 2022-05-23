@@ -6,14 +6,10 @@ export default function Footer({ movieImage, movieTitle, movieDate, movieShowtim
 			<Image>
 				<img src={movieImage} alt={movieTitle} />
 			</Image>
-			{movieDate !== '' ? (
-				<Text>
-					<p>{movieTitle}</p>
-					<p>{`${movieDate} - ${movieShowtime}`}</p>
-				</Text>
-			) : (
+			<Text>
 				<p>{movieTitle}</p>
-			)}
+				{movieDate !== '' ? <p>{`${movieDate} - ${movieShowtime}`}</p> : null}
+			</Text>
 		</Content>
 	);
 }

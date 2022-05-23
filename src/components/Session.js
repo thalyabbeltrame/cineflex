@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import SubHeader from './SubHeader';
 import Footer from './Footer';
+import Loading from './Loading';
 
 export default function Session() {
 	const { sessionId } = useParams();
@@ -77,10 +78,10 @@ export default function Session() {
 
 	return (
 		<Container>
-			<SubHeader text={'Selecione o(s) assento(s)'} screen={'Session'} />
+			<SubHeader text={'Selecione o(s) assento(s)'} />
 			<Content>
 				<Seats>
-					{sessionSeats.map((seat) => (
+					{sessionSeats[0] ? sessionSeats.map((seat) => (
 						<Seat
 							key={seat.id}
 							backgroundColor={
@@ -105,7 +106,7 @@ export default function Session() {
 						>
 							{seat.name}
 						</Seat>
-					))}
+					)) : <Loading />}
 				</Seats>
 				<SeatsAvailability>
 					{seatsAvailability.map((seat, index) => (

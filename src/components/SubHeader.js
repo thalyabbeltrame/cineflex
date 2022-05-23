@@ -1,8 +1,11 @@
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-export default function SubHeader({ text, screen }) {
+export default function SubHeader({ text }) {
+	const router = useLocation().pathname;
+	
 	return (
-		<Content color={screen === 'Success' ? '#247a6b' : '#293845'} fontWeight={screen === 'Success' ? 700 : 400}>
+		<Content color={router === '/sucesso' ? '#247a6b' : '#293845'} fontWeight={router === '/sucesso' ? 700 : 400}>
 			{text}
 		</Content>
 	);
