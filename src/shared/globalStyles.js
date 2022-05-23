@@ -144,7 +144,7 @@ const GlobalStyle = createGlobalStyle`
 
   .icon {
     position: absolute;
-    left: 28px;
+    left: 20px;
     cursor: pointer;
   }
 `;

@@ -8,7 +8,7 @@ import Session from './Session';
 import Success from './Success';
 
 export default function App() {
-	const [screen, setScreen] = useState('');
+	const [screen, setScreen] = useState('Home');
 	return (
 		<Fragment>
 			<GlobalStyle />

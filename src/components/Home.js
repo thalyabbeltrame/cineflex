@@ -41,7 +41,6 @@ const Content = styled.div`
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
-	padding: 0 10px;
 `;
 
 const Image = styled.div`
@@ -52,7 +51,7 @@ const Image = styled.div`
 	height: 209px;
 	box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
 	border-radius: 3px;
-	margin: 0 15px 30px 15px;
+	margin: 0 10px 30px 10px;
 
 	img {
 		width: 129px;
