@@ -5,16 +5,7 @@ import axios from 'axios';
 import SubHeader from './SubHeader';
 import Footer from './Footer';
 
-export const cpfMask = (value) => {
-	return value
-		.replace(/\D/g, '')
-		.replace(/(\d{3})(\d)/, '$1.$2')
-		.replace(/(\d{3})(\d)/, '$1.$2')
-		.replace(/(\d{3})(\d{1,2})/, '$1-$2')
-		.replace(/(-\d{2})\d+?$/, '$1');
-};
-
-export default function Session() {
+export default function Session({ setScreen }) {
 	const { sessionId } = useParams();
 	const navigate = useNavigate();
 	const [showtime, setShowtime] = useState('');
@@ -37,6 +28,7 @@ export default function Session() {
 			setDay(response.data.day);
 			setGeneralMovieInfos(response.data.movie);
 			setSessionSeats(response.data.seats);
+			setScreen('Session');
 		});
 	}, []);
 
@@ -47,6 +39,15 @@ export default function Session() {
 		} else {
 			setSelectedSeats([...selectedSeats, { name: seatName, id: seatId }]);
 		}
+	};
+
+	const cpfMask = (value) => {
+		return value
+			.replace(/\D/g, '')
+			.replace(/(\d{3})(\d)/, '$1.$2')
+			.replace(/(\d{3})(\d)/, '$1.$2')
+			.replace(/(\d{3})(\d{1,2})/, '$1-$2')
+			.replace(/(-\d{2})\d+?$/, '$1');
 	};
 
 	const reserveSeats = (event) => {
@@ -66,7 +67,7 @@ export default function Session() {
 					hour: showtime,
 					seats: selectedSeats.map((seat) => seat.name).sort((a, b) => a - b),
 					name: nameInput,
-					cpf: cpfInput,
+					cpf: cpfMask(cpfInput),
 				},
 			});
 		});
@@ -133,7 +134,7 @@ export default function Session() {
 					/>
 					<button
 						type='submit'
-						disabled={cpfInput.length !== 14 || nameInput === '' || selectedSeats.length === 0}
+						disabled={cpfInput.length !== 14 || nameInput.trim() === '' || selectedSeats.length === 0}
 					>
 						Reservar assento(s)
 					</button>

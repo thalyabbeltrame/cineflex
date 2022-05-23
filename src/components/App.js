@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from '../shared/globalStyles';
 import Home from './Home';
@@ -8,16 +8,17 @@ import Session from './Session';
 import Success from './Success';
 
 export default function App() {
+	const [screen, setScreen] = useState('');
 	return (
 		<Fragment>
 			<GlobalStyle />
-			<Header />
 			<BrowserRouter>
+				<Header screen={screen} />
 				<Routes>
-					<Route path='/' element={<Home />} />
-					<Route path='/sessoes/:movieId' element={<Movie />} />
-					<Route path='/assentos/:sessionId' element={<Session />} />
-					<Route path='/sucesso' element={<Success />} />
+					<Route path='/' element={<Home setScreen={setScreen} />} />
+					<Route path='/sessoes/:movieId' element={<Movie setScreen={setScreen} />} />
+					<Route path='/assentos/:sessionId' element={<Session setScreen={setScreen} />} />
+					<Route path='/sucesso' element={<Success setScreen={setScreen} />} />
 				</Routes>
 			</BrowserRouter>
 		</Fragment>

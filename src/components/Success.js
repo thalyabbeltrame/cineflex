@@ -1,19 +1,13 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import SubHeader from './SubHeader';
 
-export default function Success() {
+export default function Success({ setScreen }) {
 	const { state } = useLocation();
 	const navigate = useNavigate();
 
-	const cpfMask = (value) => {
-		return value
-			.replace(/\D/g, '')
-			.replace(/(\d{3})(\d)/, '$1.$2')
-			.replace(/(\d{3})(\d)/, '$1.$2')
-			.replace(/(\d{3})(\d{1,2})/, '$1-$2')
-			.replace(/(-\d{2})\d+?$/, '$1');
-	};
+	useEffect(() => setScreen('Success'));
 
 	const backToHome = () => {
 		navigate('/');
@@ -32,7 +26,7 @@ export default function Success() {
 				))}
 				<BoldText>Comprador</BoldText>
 				<NormalText>{`Nome: ${state.name}`}</NormalText>
-				<NormalText>{`CPF: ${cpfMask(state.cpf)}`}</NormalText>
+				<NormalText>{`CPF: ${state.cpf}`}</NormalText>
 				<Button onClick={backToHome}>{'Voltar para Home'}</Button>
 			</Content>
 		</Container>

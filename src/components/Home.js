@@ -5,12 +5,13 @@ import axios from 'axios';
 import SubHeader from './SubHeader';
 import Movie from './Movie';
 
-export default function Home() {
+export default function Home({ setScreen }) {
 	const [moviesList, setMoviesList] = useState([]);
 
 	useEffect(() => {
 		axios.get('https://mock-api.driven.com.br/api/v5/cineflex/movies').then((response) => {
 			setMoviesList(response.data);
+			setScreen('Home');
 		});
 	}, []);
 

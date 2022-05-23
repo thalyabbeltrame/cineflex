@@ -6,7 +6,7 @@ import SubHeader from './SubHeader';
 import Session from './Session';
 import Footer from './Footer';
 
-export default function Movie() {
+export default function Movie({ setScreen }) {
 	const { movieId } = useParams();
 	const [generalMovieInfos, setGeneralMovieInfos] = useState({});
 	const [movieSessions, setMovieSessions] = useState([]);
@@ -15,6 +15,7 @@ export default function Movie() {
 		axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${movieId}/showtimes`).then((response) => {
 			setGeneralMovieInfos(response.data);
 			setMovieSessions(response.data.days);
+			setScreen('Movie');
 		});
 	}, []);
 

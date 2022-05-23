@@ -141,6 +141,12 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     background-color: #ffffff;
   }
+
+  .icon {
+    position: absolute;
+    left: 28px;
+    cursor: pointer;
+  }
 `;
 
 export default GlobalStyle;
